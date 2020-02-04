@@ -2,22 +2,18 @@ package com.uek335.done;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.room.Room;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.uek335.done.activity.CreateTaskView;
 import com.uek335.done.model.AppDatabase;
-import com.uek335.done.model.Category;
 import com.uek335.done.model.Task;
-import com.uek335.done.model.TaskDao;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.room.Database;
-import androidx.room.Room;
-
-import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import java.util.List;
 
@@ -49,17 +45,7 @@ public class MainActivity extends AppCompatActivity {
                 .allowMainThreadQueries()
                 .build();
 
-        
-    }
-
-    public void addDb(){
-        database.taskDao().insertTask(new Task(){
-            {
-                setCategory(1);
-                setContent("Content");
-                setTitle("Title");
-            }
-        });
+        List<Task> tasks = database.taskDao().getAllTasks();
     }
 
     @Override
@@ -85,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onDestroy(){
+    public void onDestroy() {
         AppDatabase.destroyInstance();
         super.onDestroy();
     }
