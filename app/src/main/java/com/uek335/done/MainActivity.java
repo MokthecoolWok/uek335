@@ -6,6 +6,7 @@ import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.uek335.done.activity.CreateTaskView;
+import com.uek335.done.activity.TaskDetailView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -24,6 +25,17 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         FloatingActionButton addAction = findViewById(R.id.addTask);
+        FloatingActionButton addAction3 = findViewById(R.id.addTask3);
+
+        addAction3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent showCreateTaskView = new Intent(MainActivity.this, TaskDetailView.class);
+                // parameters ==> showCreateTaskView.putExtra("key", param);
+                MainActivity.this.startActivity(showCreateTaskView);
+            }
+        });
+
         addAction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -32,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.this.startActivity(showCreateTaskView);
             }
         });
+
+
     }
 
     @Override

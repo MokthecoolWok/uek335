@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="20dp">
+
+            <TextView
+                android:id="@+id/txt_TitleEditTask"
+                android:layout_width="118dp"
+                android:layout_height="37dp"
+                android:layout_margin="15dp"
+                android:layout_marginStart="38dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="278dp"
+                android:gravity="center"
+                android:text="Your Task"
+                android:textAlignment="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.09"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/txt_category"
+                android:layout_width="335dp"
+                android:layout_height="54dp"
+                android:layout_margin="15dp"
+                android:layout_marginStart="38dp"
+                android:gravity="center"
+                android:text="Private"
+                android:textAlignment="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_Categorie" />
+
+            <TextView
+                android:id="@+id/txt_Categorie"
+                android:layout_width="118dp"
+                android:layout_height="37dp"
+                android:layout_margin="15dp"
+                android:layout_marginStart="278dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="255dp"
+                android:gravity="center"
+                android:text="Categorie"
+                android:textAlignment="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.09"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_TitleEditTask" />
+
+            <TextView
+                android:id="@+id/Description"
+                android:layout_width="118dp"
+                android:layout_height="37dp"
+                android:layout_margin="15dp"
+                android:layout_marginStart="39dp"
+                android:layout_marginTop="50dp"
+                android:layout_marginEnd="278dp"
+                android:gravity="center"
+                android:text="Description"
+                android:textAlignment="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.09"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_category" />
+
+            <TextView
+                android:id="@+id/txt_Date"
+                android:layout_width="118dp"
+                android:layout_height="37dp"
+                android:layout_margin="15dp"
+                android:layout_marginStart="39dp"
+                android:layout_marginTop="33dp"
+                android:layout_marginEnd="278dp"
+                android:gravity="center"
+                android:text="Date"
+                android:textAlignment="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.09"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tyt_Description" />
+
+            <TextView
+                android:id="@+id/tyt_Description"
+                android:layout_width="335dp"
+                android:layout_height="54dp"
+                android:layout_margin="15dp"
+                android:layout_marginStart="62dp"
+                android:layout_marginEnd="37dp"
+                android:gravity="center"
+                android:inputType="text"
+                android:text="Description"
+                android:textAlignment="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/Description" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/btnEditTask"
+                android:layout_width="129dp"
+                android:layout_height="0dp"
+                android:layout_marginEnd="25dp"
+                android:layout_marginBottom="25dp"
+                android:clickable="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:srcCompat="@color/design_default_color_primary_dark" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="20dp" />
+
+            <EditText
+                android:id="@+id/editText"
+                android:layout_width="336dp"
+                android:layout_height="53dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="158dp"
+                android:ems="10"
+                android:inputType="date"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_Date" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="20dp">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnEditTask"
+            android:layout_width="129dp"
+            android:layout_height="0dp"
+            android:clickable="true"
+            app:srcCompat="@color/design_default_color_primary_dark"
+            tools:layout_editor_absoluteX="317dp"
+            tools:layout_editor_absoluteY="449dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnEditTask2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:clickable="true"
+        app:srcCompat="@color/design_default_color_primary_dark"
+        tools:layout_editor_absoluteX="317dp"
+        tools:layout_editor_absoluteY="449dp" />
+</LinearLayout>
