@@ -4,17 +4,26 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.uek335.done.activity.CreateTaskView;
+import com.uek335.done.model.AppDatabase;
+import com.uek335.done.model.Category;
+import com.uek335.done.model.Task;
+import com.uek335.done.model.TaskDao;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.room.Database;
+import androidx.room.Room;
 
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
+
+    AppDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,13 +32,32 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton addAction = findViewById(R.id.addTask);
-        addAction.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton addTaskButton = findViewById(R.id.addTask);
+        addTaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent showCreateTaskView = new Intent(MainActivity.this, CreateTaskView.class);
                 // parameters ==> showCreateTaskView.putExtra("key", param);
                 MainActivity.this.startActivity(showCreateTaskView);
+            }
+        });
+
+        /**
+         * Initialize Database
+         */
+        database = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "task_databasa")
+                .allowMainThreadQueries()
+                .build();
+
+        
+    }
+
+    public void addDb(){
+        database.taskDao().insertTask(new Task(){
+            {
+                setCategory(1);
+                setContent("Content");
+                setTitle("Title");
             }
         });
     }
@@ -54,5 +82,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onDestroy(){
+        AppDatabase.destroyInstance();
+        super.onDestroy();
     }
 }
