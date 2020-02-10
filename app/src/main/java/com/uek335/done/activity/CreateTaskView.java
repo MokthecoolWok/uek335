@@ -1,8 +1,9 @@
 package com.uek335.done.activity;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.icu.text.SimpleDateFormat;
 import android.icu.util.Calendar;
 import android.os.Bundle;
@@ -13,7 +14,6 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.room.Room;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.uek335.done.MainActivity;
@@ -25,16 +25,18 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CreateTaskView extends AppCompatActivity {
-    /* database connection */
-    AppDatabase database;
+import static com.uek335.done.R.drawable.button_blue;
+import static com.uek335.done.R.drawable.button_disabled;
+import static com.uek335.done.R.drawable.button_green;
+import static com.uek335.done.R.drawable.button_orange;
 
+public class CreateTaskView extends AppCompatActivity {
     /* dateformat */
     String dateFormat = "dd/MM/yy";
     SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
 
     /* buttons for category */
-    private List<Button> categoryButtons = new ArrayList<Button>();
+    private List<Button> categoryButtons = new ArrayList<>();
     private Button buttonToUnfocus;
     private int[] buttonIds = {R.id.btnWork, R.id.btnSchool, R.id.btnPrivate};
 
@@ -51,37 +53,35 @@ public class CreateTaskView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_task_view);
 
-        // add Database context
-        database = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "task_databasa")
-                .allowMainThreadQueries()
-                .build();
-
         // get Back button
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // initialize category buttons
-        for(int i = 0; i < categoryButtons.size(); i++){
+        for (int i = 0; i < buttonIds.length; i++) {
             categoryButtons.add((Button) findViewById(buttonIds[i]));
-            categoryButtons.get(i).setBackgroundColor(Color.rgb(207, 207, 207));
             categoryButtons.get(i).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    categoryButtons.get(0).setBackgroundResource(button_green);
+                    categoryButtons.get(1).setBackgroundResource(button_orange);
+                    categoryButtons.get(2).setBackgroundResource(button_blue);
+
                     // check if button is selected a second time
-                    if(buttonToUnfocus != null && v.getId() == buttonToUnfocus.getId()){
+                    if (buttonToUnfocus != null && v.getId() == buttonToUnfocus.getId()) {
                         unsetButtonFocus((Button) v);
                     } else {
                         // switch focus
-                        switch (v.getId()){
-                            case R.id.btnWork :
+                        switch (v.getId()) {
+                            case R.id.btnWork:
                                 setButtonFocus(buttonToUnfocus, categoryButtons.get(0));
                                 break;
 
-                            case R.id.btnSchool :
+                            case R.id.btnSchool:
                                 setButtonFocus(buttonToUnfocus, categoryButtons.get(1));
                                 break;
 
-                            case R.id.btnPrivate :
+                            case R.id.btnPrivate:
                                 setButtonFocus(buttonToUnfocus, categoryButtons.get(2));
                                 break;
                         }
@@ -90,7 +90,7 @@ public class CreateTaskView extends AppCompatActivity {
             });
         }
 
-        endDate = (EditText) findViewById(R.id.dateEndDate);
+        endDate = findViewById(R.id.dateEndDate);
         // initialize datepicker
         date = new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -127,27 +127,24 @@ public class CreateTaskView extends AppCompatActivity {
         final EditText titleView = findViewById(R.id.txtTitle);
 
         // check if title is set
-        if(!titleView.getText().toString().isEmpty()){
+        if (!titleView.getText().toString().trim().isEmpty()) {
             // post new entry to db
-            database.taskDao().insertTask(new Task() {
+            AppDatabase.getAppDatabase(getApplicationContext()).taskDao().insertTask(new Task() {
                 {
                     // set title
-                    setTitle(titleView.getText().toString());
+                    setTitle(titleView.getText().toString().trim());
                     // set description
                     EditText contentView = findViewById(R.id.txtDescription);
-                    setContent(contentView.getText().toString());
+                    setContent(contentView.getText().toString().trim());
                     // set category
-                    int indexOfCategory = categoryButtons.indexOf(buttonToUnfocus);
-                    setCategory(indexOfCategory);
-                    setCategory(1);
-                    // set enddate
+                    setCategory(categoryButtons.indexOf(buttonToUnfocus));
+                    // set end date
                     EditText endDate = findViewById(R.id.dateEndDate);
                     try {
                         setEndDate(sdf.parse(endDate.getText().toString()));
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-
                 }
             });
 
@@ -156,11 +153,20 @@ public class CreateTaskView extends AppCompatActivity {
             startActivity(returnToStart);
         } else {
             // throw alert dialog here
-
+            new AlertDialog.Builder(this)
+                    .setTitle("Error")
+                    .setMessage("Please add a title to your task!")
+                    .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .show();
         }
     }
 
-    public boolean onOptionsItemSelected(MenuItem item){
+    public boolean onOptionsItemSelected(MenuItem item) {
         Intent returnIntent = new Intent(getApplicationContext(), MainActivity.class);
         startActivityForResult(returnIntent, 0);
         return true;
@@ -172,33 +178,31 @@ public class CreateTaskView extends AppCompatActivity {
 
     /**
      * Set focus for category button
-     * @param unfocusedButton   Button to unfocus
-     * @param focusedButton     Newly focused button
+     *
+     * @param unfocusedButton Button to unfocus
+     * @param focusedButton   Newly focused button
      */
-    private void setButtonFocus(Button unfocusedButton, Button focusedButton){
-        if(buttonToUnfocus != null){
-            unfocusedButton.setTextColor(Color.rgb(49, 50, 51));
-            unfocusedButton.setBackgroundColor(Color.rgb(207, 207, 207));
-        }
-        focusedButton.setTextColor(Color.rgb(255, 255, 255));
-        focusedButton.setBackgroundColor(Color.rgb(3, 106, 150));
+    private void setButtonFocus(Button unfocusedButton, final Button focusedButton) {
+        categoryButtons.forEach(button -> {
+            if (!focusedButton.equals(button)) {
+                button.setBackgroundResource(button_disabled);
+            }
+        });
+
         this.buttonToUnfocus = focusedButton;
     }
 
     /**
      * Unfocus already focused button
-     * @param focusedButton     Newly focused button
+     *
+     * @param focusedButton Newly focused button
      */
-    private void unsetButtonFocus(Button focusedButton){
-        if(focusedButton != null){
-            focusedButton.setTextColor(Color.rgb(49, 50, 51));
-            focusedButton.setBackgroundColor(Color.rgb(207, 207, 207));
-            this.buttonToUnfocus = null;
-        }
+    private void unsetButtonFocus(Button focusedButton) {
+        this.buttonToUnfocus = null;
     }
 
     /**
-     * @Section Datepicker
+     * @Section Datepicker functionality
      */
     private void updateLabel() {
         endDate.setText(sdf.format(calendar.getTime()));

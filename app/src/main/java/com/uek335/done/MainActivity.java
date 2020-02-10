@@ -1,6 +1,5 @@
 package com.uek335.done;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -9,7 +8,6 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.room.Room;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.uek335.done.activity.CreateTaskView;
@@ -19,9 +17,6 @@ import com.uek335.done.model.Task;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-
-    AppDatabase database;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,18 +34,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        /**
-         * Initialize Database
-         */
-        database = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "task_databasa")
-                .fallbackToDestructiveMigration()
-                .allowMainThreadQueries()
-                .build();
-
         /* Get all tasks from db */
-        List<Task> tasks = database.taskDao().getAllTasks();
-
-
+        List<Task> tasks = AppDatabase.getAppDatabase(getApplicationContext()).taskDao().getAllTasks();
     }
 
     @Override

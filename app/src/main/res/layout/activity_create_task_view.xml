@@ -28,6 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="14dp"
         android:text="School"
+        android:background="@drawable/button_orange"
         app:layout_constraintEnd_toStartOf="@+id/btnPrivate"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/btnWork"
@@ -39,6 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="14dp"
         android:text="Private"
+        android:background="@drawable/button_blue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/btnSchool"
@@ -50,6 +52,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="14dp"
         android:text="Work"
+        android:background="@drawable/button_green"
         app:layout_constraintEnd_toStartOf="@+id/btnSchool"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -57,11 +60,11 @@
 
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="117dp"
-        android:layout_height="34dp"
+        android:layout_width="229dp"
+        android:layout_height="33dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="30dp"
-        android:text="Category"
+        android:text="Choose a category:"
         android:textSize="24dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
