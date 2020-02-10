@@ -30,9 +30,9 @@ public class MainActivity extends AppCompatActivity {
         addAction3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent showCreateTaskView = new Intent(MainActivity.this, TaskDetailView.class);
+                Intent showTaskDetailView = new Intent(MainActivity.this, TaskDetailView.class);
                 // parameters ==> showCreateTaskView.putExtra("key", param);
-                MainActivity.this.startActivity(showCreateTaskView);
+                MainActivity.this.startActivity(showTaskDetailView);
             }
         });
 
