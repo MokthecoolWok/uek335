@@ -9,7 +9,6 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.room.Room;
 
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -29,10 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-
-    AppDatabase database;
     Context context;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,13 +53,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(context, "An item of the ListView is clicked", Toast.LENGTH_LONG).show();
             }
         });
-        //Initialize Database
-        database = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "task_databasa")
-                .allowMainThreadQueries()
-                .build();
-
-        // Get all tasks from db
-        String[] items = database.taskDao().getTitelFromTasks();
+        List<Task> tasks = AppDatabase.getAppDatabase(getApplicationContext()).taskDao().getAllTasks();
         LstViewAdapter adapter = new LstViewAdapter(this,R.layout.list_item, R.id.txt, items);
         lstview.setAdapter(adapter);
     }
