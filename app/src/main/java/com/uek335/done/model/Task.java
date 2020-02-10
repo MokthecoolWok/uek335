@@ -53,4 +53,7 @@ public class Task {
     public void setCategory(int categoryId) {
         this.category = categoryId;
     }
+    public String toString(){
+        return this.title + this.category;
+    }
 }
