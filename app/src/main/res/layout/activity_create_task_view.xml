@@ -130,6 +130,7 @@
 
     <EditText
         android:id="@+id/dateEndDate"
+        android:focusable="false"
         android:layout_width="351dp"
         android:layout_height="44dp"
         android:ems="10"
