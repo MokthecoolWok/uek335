@@ -4,6 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
+
+import java.util.Date;
 
 
 @Entity(tableName = "tasks")
@@ -21,6 +24,10 @@ public class Task {
 
     @ColumnInfo(name = "category")
     private int category;
+
+    @ColumnInfo(name = "endDate")
+    @TypeConverters({DateConverter.class})
+    private Date endDate;
 
     public int getId() {
         return id;
@@ -52,5 +59,13 @@ public class Task {
 
     public void setCategory(int categoryId) {
         this.category = categoryId;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 }

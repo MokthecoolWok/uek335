@@ -1,5 +1,6 @@
 package com.uek335.done;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
          * Initialize Database
          */
         database = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "task_databasa")
+                .fallbackToDestructiveMigration()
                 .allowMainThreadQueries()
                 .build();
 

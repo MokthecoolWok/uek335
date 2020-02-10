@@ -21,14 +21,20 @@ import com.uek335.done.R;
 import com.uek335.done.model.AppDatabase;
 import com.uek335.done.model.Task;
 
-import java.util.Locale;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CreateTaskView extends AppCompatActivity {
     /* database connection */
     AppDatabase database;
 
+    /* dateformat */
+    String dateFormat = "dd/MM/yy";
+    SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
+
     /* buttons for category */
-    private Button[] categoryButtons = new Button[3];
+    private List<Button> categoryButtons = new ArrayList<Button>();
     private Button buttonToUnfocus;
     private int[] buttonIds = {R.id.btnWork, R.id.btnSchool, R.id.btnPrivate};
 
@@ -55,10 +61,10 @@ public class CreateTaskView extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // initialize category buttons
-        for(int i = 0; i < categoryButtons.length; i++){
-            categoryButtons[i] = (Button) findViewById(buttonIds[i]);
-            categoryButtons[i].setBackgroundColor(Color.rgb(207, 207, 207));
-            categoryButtons[i].setOnClickListener(new View.OnClickListener() {
+        for(int i = 0; i < categoryButtons.size(); i++){
+            categoryButtons.add((Button) findViewById(buttonIds[i]));
+            categoryButtons.get(i).setBackgroundColor(Color.rgb(207, 207, 207));
+            categoryButtons.get(i).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     // check if button is selected a second time
@@ -68,15 +74,15 @@ public class CreateTaskView extends AppCompatActivity {
                         // switch focus
                         switch (v.getId()){
                             case R.id.btnWork :
-                                setButtonFocus(buttonToUnfocus, categoryButtons[0]);
+                                setButtonFocus(buttonToUnfocus, categoryButtons.get(0));
                                 break;
 
                             case R.id.btnSchool :
-                                setButtonFocus(buttonToUnfocus, categoryButtons[1]);
+                                setButtonFocus(buttonToUnfocus, categoryButtons.get(1));
                                 break;
 
                             case R.id.btnPrivate :
-                                setButtonFocus(buttonToUnfocus, categoryButtons[2]);
+                                setButtonFocus(buttonToUnfocus, categoryButtons.get(2));
                                 break;
                         }
                     }
@@ -121,7 +127,7 @@ public class CreateTaskView extends AppCompatActivity {
         final EditText titleView = findViewById(R.id.txtTitle);
 
         // check if title is set
-        if(titleView.getText().toString() != ""){
+        if(!titleView.getText().toString().isEmpty()){
             // post new entry to db
             database.taskDao().insertTask(new Task() {
                 {
@@ -130,14 +136,24 @@ public class CreateTaskView extends AppCompatActivity {
                     // set description
                     EditText contentView = findViewById(R.id.txtDescription);
                     setContent(contentView.getText().toString());
-
                     // set category
-
+                    int indexOfCategory = categoryButtons.indexOf(buttonToUnfocus);
+                    setCategory(indexOfCategory);
                     setCategory(1);
                     // set enddate
+                    EditText endDate = findViewById(R.id.dateEndDate);
+                    try {
+                        setEndDate(sdf.parse(endDate.getText().toString()));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
 
                 }
             });
+
+            // return to main page
+            Intent returnToStart = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(returnToStart);
         } else {
             // throw alert dialog here
 
@@ -185,9 +201,6 @@ public class CreateTaskView extends AppCompatActivity {
      * @Section Datepicker
      */
     private void updateLabel() {
-        String myFormat = "dd/MM/yy";
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.GERMAN);
-
         endDate.setText(sdf.format(calendar.getTime()));
     }
 }
