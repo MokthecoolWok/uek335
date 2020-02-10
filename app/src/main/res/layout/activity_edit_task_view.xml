@@ -15,9 +15,8 @@
         android:layout_marginTop="24dp"
         android:layout_marginEnd="94dp"
         android:fontFamily="@font/roboto"
-        android:text="Create new task"
+        android:text="Edit Your Task"
         android:textAlignment="center"
-        android:textColor="#1c4966"
         android:textSize="38sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
@@ -52,6 +51,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="14dp"
         android:text="Work"
+
         app:layout_constraintEnd_toStartOf="@+id/btnSchool"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -64,7 +64,6 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="32dp"
         android:text="Category"
-        android:textColor="#1c4966"
         android:textSize="24dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
@@ -90,7 +89,6 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="224dp"
         android:text="Title"
-        android:textColor="#1c4966"
         android:textSize="24dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -128,7 +126,6 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
         android:text="Description"
-        android:textColor="#1c4966"
         android:textSize="24dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtTitle" />
@@ -151,7 +148,6 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
         android:text="Enddate"
-        android:textColor="#1c4966"
         android:textSize="24dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtDescription" />

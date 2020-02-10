@@ -2,20 +2,25 @@ package com.uek335.done;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-import com.uek335.done.activity.CreateTaskView;
-import com.uek335.done.activity.TaskDetailView;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.room.Room;
 
-import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.uek335.done.activity.CreateTaskView;
+import com.uek335.done.activity.TaskDetailView;
+import com.uek335.done.model.AppDatabase;
+import com.uek335.done.model.Task;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+
+    AppDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,20 +28,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        FloatingActionButton testBtnforDeitail;
 
-        FloatingActionButton addAction = findViewById(R.id.addTask);
-        FloatingActionButton addAction3 = findViewById(R.id.addTask3);
-
-        addAction3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent showTaskDetailView = new Intent(MainActivity.this, TaskDetailView.class);
-                // parameters ==> showCreateTaskView.putExtra("key", param);
-                MainActivity.this.startActivity(showTaskDetailView);
-            }
-        });
-
-        addAction.setOnClickListener(new View.OnClickListener() {
+        // Create CreateView
+        FloatingActionButton addTaskButton = findViewById(R.id.addTask);
+        addTaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent showCreateTaskView = new Intent(MainActivity.this, CreateTaskView.class);
@@ -44,6 +40,29 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.this.startActivity(showCreateTaskView);
             }
         });
+
+        // Create DetailView
+        FloatingActionButton addTaskTaskDetailView = findViewById(R.id.addTask3);
+        addTaskTaskDetailView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent showTaskDetailView = new Intent(MainActivity.this, TaskDetailView.class);
+                int TaskID = getTaskId();
+                showTaskDetailView.putExtra("taskId", TaskID);
+                MainActivity.this.startActivity(showTaskDetailView);
+            }
+        });
+
+        /**
+         * Initialize Database
+         */
+        database = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "task_databasa")
+                .allowMainThreadQueries()
+                .build();
+
+        /* Get all tasks from db */
+        List<Task> tasks = database.taskDao().getAllTasks();
 
 
     }
@@ -68,5 +87,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onDestroy() {
+        AppDatabase.destroyInstance();
+        super.onDestroy();
     }
 }
