@@ -53,7 +53,7 @@ public class CreateTaskView extends AppCompatActivity {
         EditText titleView = findViewById(R.id.txtTitle);
 
         // check if title is set
-        if(titleView.getText().toString() == ""){
+        if(titleView.getText().toString() != ""){
             // post new entry to db
             database.taskDao().insertTask(new Task() {
                 {
@@ -64,7 +64,7 @@ public class CreateTaskView extends AppCompatActivity {
             });
         } else {
             // throw alert dialog here
-            
+
         }
     }
 

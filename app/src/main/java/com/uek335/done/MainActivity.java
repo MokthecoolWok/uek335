@@ -45,7 +45,10 @@ public class MainActivity extends AppCompatActivity {
                 .allowMainThreadQueries()
                 .build();
 
+        /* Get all tasks from db */
         List<Task> tasks = database.taskDao().getAllTasks();
+
+
     }
 
     @Override
