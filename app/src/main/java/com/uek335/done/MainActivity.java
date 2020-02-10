@@ -1,20 +1,30 @@
 package com.uek335.done;
 
+import android.content.Intent;
 import android.os.Bundle;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.room.Room;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.uek335.done.activity.CreateTaskView;
+import com.uek335.done.model.AppDatabase;
+import com.uek335.done.model.Task;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
+
+    AppDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,12 +33,13 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton addTaskButton = findViewById(R.id.addTask);
+        addTaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent showCreateTaskView = new Intent(MainActivity.this, CreateTaskView.class);
+                // parameters ==> showCreateTaskView.putExtra("key", param);
+                MainActivity.this.startActivity(showCreateTaskView);
             }
         });
         ListView tasks = findViewById(R.id.tasklist);
@@ -37,6 +48,18 @@ public class MainActivity extends AppCompatActivity {
         // TODO: add dao get all tasks
         taskAdapter.addAll();
         tasks.setAdapter(taskAdapter);
+
+        /**
+         * Initialize Database
+         */
+        database = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "task_databasa")
+                .allowMainThreadQueries()
+                .build();
+
+        /* Get all tasks from db */
+        List<Task> tasks = database.taskDao().getAllTasks();
+
+
     }
 
     @Override
@@ -59,5 +82,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onDestroy() {
+        AppDatabase.destroyInstance();
+        super.onDestroy();
     }
 }
