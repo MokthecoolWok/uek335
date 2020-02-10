@@ -11,6 +11,8 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,6 +31,12 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+        ListView tasks = findViewById(R.id.tasklist);
+        // TODO: add task class
+        ArrayAdapter<> taskAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1);
+        // TODO: add dao get all tasks
+        taskAdapter.addAll();
+        tasks.setAdapter(taskAdapter);
     }
 
     @Override
