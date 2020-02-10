@@ -11,7 +11,7 @@ import java.util.List;
 @Dao
 public interface TaskDao {
     @Query("SELECT * FROM tasks")
-    List<Task> getAllTasks();
+    Task[] getAllTasks();
 
     @Query("Select title FROM tasks")
     String[] getTitelFromTasks();

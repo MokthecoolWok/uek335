@@ -37,15 +37,15 @@ public class MainActivity extends AppCompatActivity {
         //Toolbar and Floatingbar to add Task
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        //FloatingActionButton addTaskButton = findViewById(R.id.addTask);
-        /*addTaskButton.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton addTaskButton = findViewById(R.id.addTask);
+        addTaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent showCreateTaskView = new Intent(MainActivity.this, CreateTaskView.class);
                 // parameters ==> showCreateTaskView.putExtra("key", param);
                 MainActivity.this.startActivity(showCreateTaskView);
             }
-        });*/
+        });
         ListView lstview=(ListView)findViewById(R.id.listv);
         lstview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -53,7 +53,8 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(context, "An item of the ListView is clicked", Toast.LENGTH_LONG).show();
             }
         });
-        List<Task> tasks = AppDatabase.getAppDatabase(getApplicationContext()).taskDao().getAllTasks();
+        //List<Task> items = AppDatabase.getAppDatabase(getApplicationContext()).taskDao().getAllTasks();
+        String[] items = AppDatabase.getAppDatabase(getApplicationContext()).taskDao().getTitelFromTasks();
         LstViewAdapter adapter = new LstViewAdapter(this,R.layout.list_item, R.id.txt, items);
         lstview.setAdapter(adapter);
     }

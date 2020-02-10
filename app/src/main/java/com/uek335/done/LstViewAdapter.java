@@ -8,7 +8,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.uek335.done.model.Task;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class LstViewAdapter extends ArrayAdapter<String> {
     int groupid;
@@ -19,7 +22,7 @@ public class LstViewAdapter extends ArrayAdapter<String> {
         super(context, vg, id, item_list);
         this.context=context;
         groupid=vg;
-        this.item_list=item_list;
+        this.item_list = item_list;
     }
     static class ViewHolder{
         public TextView textView;
