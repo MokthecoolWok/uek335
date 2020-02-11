@@ -44,6 +44,7 @@ public class LstViewAdapter extends ArrayAdapter<String> {
         ViewHolder holder = (ViewHolder) rowView.getTag();
         holder.textView.setText(taskList[position].getTitle());
         holder.textView.setTextColor(Color.BLACK);
+        holder.textView.setId(taskList[position].getId());
         holder.button.setText("_/");
         holder.button.setId(taskList[position].getId());
         switch(taskList[position].getCategory()){

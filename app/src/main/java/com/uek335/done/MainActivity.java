@@ -49,12 +49,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         ListView lstview=(ListView)findViewById(R.id.listv);
-        lstview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(context, "Clicked", Toast.LENGTH_LONG).show();
-            }
-        });
         //List<Task> items = AppDatabase.getAppDatabase(getApplicationContext()).taskDao().getAllTasks();
         Task[] tasks = AppDatabase.getAppDatabase(getApplicationContext()).taskDao().getAllTasks();
         String[] titel = AppDatabase.getAppDatabase(getApplicationContext()).taskDao().getTitelFromTasks();
@@ -90,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    public void clickMe(View view){
+    public void deleteTask(View view){
         Button bt=(Button)view;
         int taskId = bt.getId();
         Task[] tasks = AppDatabase.getAppDatabase(getApplicationContext()).taskDao().getAllTasks();
@@ -101,5 +95,15 @@ public class MainActivity extends AppCompatActivity {
         }
         finish();
         startActivity(getIntent());
+    }
+    public void goToDetail(View view){
+        TextView tV =(TextView)view;
+        int taskId = tV.getId();
+        Task[] tasks = AppDatabase.getAppDatabase(getApplicationContext()).taskDao().getAllTasks();
+        for (int x = 0; x < tasks.length; x++){
+            if (tasks[x].getId() == taskId){
+                //TODO add weiterleitung to detail
+            }
+        }
     }
 }
