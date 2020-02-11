@@ -1,12 +1,15 @@
 package com.uek335.done;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.uek335.done.model.Task;
 
@@ -15,14 +18,14 @@ import java.util.List;
 
 public class LstViewAdapter extends ArrayAdapter<String> {
     int groupid;
-    String[] item_list;
+    Task[] taskList;
     ArrayList<String> desc;
     Context context;
-    public LstViewAdapter(Context context, int vg, int id, String[] item_list){
-        super(context, vg, id, item_list);
+    public LstViewAdapter(Context context, int vg, int id, Task[] taskList, String[] taskTitel){
+        super(context, vg, id, taskTitel);
         this.context=context;
         groupid=vg;
-        this.item_list = item_list;
+        this.taskList = taskList;
     }
     static class ViewHolder{
         public TextView textView;
@@ -39,8 +42,21 @@ public class LstViewAdapter extends ArrayAdapter<String> {
             rowView.setTag(viewHolder);
         }
         ViewHolder holder = (ViewHolder) rowView.getTag();
-        holder.textView.setText(item_list[position]);
-        holder.button.setText(item_list[position]);
+        holder.textView.setText(taskList[position].getTitle());
+        holder.textView.setTextColor(Color.BLACK);
+        holder.button.setText("_/");
+        holder.button.setId(taskList[position].getId());
+        switch(taskList[position].getCategory()){
+            case 0:
+                holder.textView.setBackgroundColor(Color.parseColor("#77dd77"));
+                break;
+            case 1:
+                holder.textView.setBackgroundColor(Color.parseColor("#ff8b3d"));
+                break;
+            case 2:
+                holder.textView.setBackgroundColor(Color.parseColor("#59bfff"));
+        }
+
         return rowView;
     }
 }

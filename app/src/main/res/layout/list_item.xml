@@ -5,18 +5,19 @@
     android:layout_height="match_parent"
     android:padding="5dp"
     android:orientation="horizontal">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/txt"
-        android:layout_marginRight="10dp">
-    </TextView>
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/bt"
         android:focusable="false"
         android:padding="10sp"
-        android:onClick="clickMe">
+        android:onClick="clickMe"
+        android:layout_marginRight="1dp">
     </Button>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:id="@+id/txt"
+        android:layout_marginRight="10dp">
+    </TextView>
 </LinearLayout>

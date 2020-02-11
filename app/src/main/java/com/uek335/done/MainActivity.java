@@ -21,7 +21,9 @@ import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -50,12 +52,13 @@ public class MainActivity extends AppCompatActivity {
         lstview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(context, "An item of the ListView is clicked", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Clicked", Toast.LENGTH_LONG).show();
             }
         });
         //List<Task> items = AppDatabase.getAppDatabase(getApplicationContext()).taskDao().getAllTasks();
-        String[] items = AppDatabase.getAppDatabase(getApplicationContext()).taskDao().getTitelFromTasks();
-        LstViewAdapter adapter = new LstViewAdapter(this,R.layout.list_item, R.id.txt, items);
+        Task[] tasks = AppDatabase.getAppDatabase(getApplicationContext()).taskDao().getAllTasks();
+        String[] titel = AppDatabase.getAppDatabase(getApplicationContext()).taskDao().getTitelFromTasks();
+        LstViewAdapter adapter = new LstViewAdapter(this,R.layout.list_item, R.id.txt, tasks, titel);
         lstview.setAdapter(adapter);
     }
 
@@ -89,6 +92,14 @@ public class MainActivity extends AppCompatActivity {
 
     public void clickMe(View view){
         Button bt=(Button)view;
-        Toast.makeText(this,"Clicked" + bt.getText().toString(), Toast.LENGTH_LONG).show();
+        int taskId = bt.getId();
+        Task[] tasks = AppDatabase.getAppDatabase(getApplicationContext()).taskDao().getAllTasks();
+        for (int x = 0; x < tasks.length; x++){
+            if (tasks[x].getId() == taskId){
+                AppDatabase.getAppDatabase(getApplicationContext()).taskDao().deleteTask(tasks[x]);
+            }
+        }
+        finish();
+        startActivity(getIntent());
     }
 }
