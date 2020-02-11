@@ -91,7 +91,7 @@ public class CreateTaskView extends AppCompatActivity {
             });
         }
 
-        endDate = findViewById(R.id.dateEndDate);
+        endDate = findViewById(R.id.datepicker);
         // initialize datepicker
         date = new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -140,7 +140,7 @@ public class CreateTaskView extends AppCompatActivity {
                     // set category
                     setCategory(categoryButtons.indexOf(buttonToUnfocus));
                     // set end date
-                    EditText endDate = findViewById(R.id.dateEndDate);
+                    EditText endDate = findViewById(R.id.datepicker);
                     try {
                         setEndDate(sdf.parse(endDate.getText().toString()));
                     } catch (ParseException e) {

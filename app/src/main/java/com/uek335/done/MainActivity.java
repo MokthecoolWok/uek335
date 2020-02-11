@@ -13,6 +13,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.uek335.done.activity.CreateTaskView;
+import com.uek335.done.activity.EditTaskView;
 import com.uek335.done.activity.TaskDetailView;
 import com.uek335.done.model.AppDatabase;
 import com.uek335.done.model.Task;
@@ -50,7 +51,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         ListView lstview=(ListView)findViewById(R.id.listv);
-        //List<Task> items = AppDatabase.getAppDatabase(getApplicationContext()).taskDao().getAllTasks();
+        lstview.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+                LinearLayout tV =(LinearLayout)view;
+                int taskId = tV.getId();
+                Intent showEditTaskView = new Intent(MainActivity.this, TaskDetailView.class);
+                showEditTaskView.putExtra("TaskId", taskId);
+                MainActivity.this.startActivity(showEditTaskView);
+            }
+        });
         Task[] tasks = AppDatabase.getAppDatabase(getApplicationContext()).taskDao().getAllTasks();
         String[] titel = AppDatabase.getAppDatabase(getApplicationContext()).taskDao().getTitelFromTasks();
         LstViewAdapter adapter = new LstViewAdapter(this,R.layout.list_item, R.id.txt, tasks, titel);
@@ -97,14 +106,16 @@ public class MainActivity extends AppCompatActivity {
         finish();
         startActivity(getIntent());
     }
-    public void goToDetail(View view){
+    /*public void goToDetail(View view){
         TextView tV =(TextView)view;
         int taskId = tV.getId();
         Task[] tasks = AppDatabase.getAppDatabase(getApplicationContext()).taskDao().getAllTasks();
         for (int x = 0; x < tasks.length; x++){
             if (tasks[x].getId() == taskId){
-                //TODO add weiterleitung to detail
+                Intent showEditTaskView = new Intent(MainActivity.this, EditTaskView.class);
+                showEditTaskView.putExtra("key", tasks[x].getId());
+                MainActivity.this.startActivity(showEditTaskView);
             }
         }
-    }
+    }*/
 }

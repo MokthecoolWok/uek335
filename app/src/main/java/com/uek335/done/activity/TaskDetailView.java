@@ -15,6 +15,10 @@ import com.uek335.done.R;
 import com.uek335.done.model.AppDatabase;
 import com.uek335.done.model.Task;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class TaskDetailView extends AppCompatActivity {
 
     FloatingActionButton btn;
@@ -24,15 +28,10 @@ public class TaskDetailView extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        Intent intent = getIntent();
+        int taskId = intent.getIntExtra("TaskId", 1);
 
-        int taskId = getTaskId();
-
-        // add Database context
-        database = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "task_databasa")
-                .allowMainThreadQueries()
-                .build();
-
-        Task actualTask = database.taskDao().getTask(taskId);
+        Task actualTask = AppDatabase.getAppDatabase(getApplicationContext()).taskDao().getTask(taskId);
 
         // get Back button
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -44,12 +43,12 @@ public class TaskDetailView extends AppCompatActivity {
         TextView txtCategory = (TextView)findViewById(R.id.txtCategory);
         TextView txtDescription = (TextView)findViewById(R.id.txtDescription);
         TextView txtTitle = (TextView)findViewById(R.id.txtTitle);
-        //TextView datepicker = (TextView)findViewById(R.id.datepicker);
+        TextView datepicker = (TextView)findViewById(R.id.datepicker);
 
-        txtCategory.setText(actualTask.getCategory());
+        txtCategory.setText(actualTask.getCategoryString());
         txtDescription.setText(actualTask.getContent());
         txtTitle.setText(actualTask.getTitle());
-        // datepicker.setText(actualTask.);
+        datepicker.setText(actualTask.getEndDateString());
 
 
         btn = findViewById(R.id.btnEditTask);
@@ -58,8 +57,7 @@ public class TaskDetailView extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent showEditTaskView = new Intent(TaskDetailView.this, EditTaskView.class);
-                int TaskID = getTaskId();
-                showEditTaskView.putExtra("taskId", TaskID);
+                showEditTaskView.putExtra("TaskId", taskId);
                 TaskDetailView.this.startActivity(showEditTaskView);
             }
         });

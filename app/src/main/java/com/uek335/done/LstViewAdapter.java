@@ -46,6 +46,7 @@ public class LstViewAdapter extends ArrayAdapter<String> {
         holder.textView.setTextColor(Color.BLACK);
         holder.textView.setId(taskList[position].getId());
         holder.button.setId(taskList[position].getId());
+        rowView.setId(taskList[position].getId());
         switch(taskList[position].getCategory()){
             case 0:
                 rowView.setBackgroundColor(Color.parseColor("#77dd77"));

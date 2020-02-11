@@ -54,7 +54,7 @@ public class Task {
     }
 
     public int getCategory() {
-        return category;
+        return this.category;
     }
 
     public void setCategory(int categoryId) {
@@ -70,5 +70,28 @@ public class Task {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    public String getEndDateString(){
+        if(this.endDate == null){
+            return "No Date";
+        }else {
+            return "" + this.endDate;
+        }
+    }
+
+    public String getCategoryString(){
+        String val = "none";
+        switch(this.category){
+            case 0:
+                val = "Work";
+                break;
+            case 1:
+                val = "School";
+                break;
+            case 2:
+                val = "Private";
+        }
+        return val;
     }
 }
