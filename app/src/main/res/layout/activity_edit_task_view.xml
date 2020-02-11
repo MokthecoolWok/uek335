@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-
-
     xmlns:tools="http://schemas.android.com/tools"
+
+
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -15,9 +15,8 @@
         android:layout_marginTop="24dp"
         android:layout_marginEnd="94dp"
         android:fontFamily="@font/roboto"
-        android:text="Create new task"
+        android:text="Edit Your Task"
         android:textAlignment="center"
-        android:textColor="#1c4966"
         android:textSize="38sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
@@ -30,7 +29,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="14dp"
         android:text="School"
-        android:background="@drawable/button_orange"
         app:layout_constraintEnd_toStartOf="@+id/btnPrivate"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/btnWork"
@@ -42,7 +40,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="14dp"
         android:text="Private"
-        android:background="@drawable/button_blue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/btnSchool"
@@ -53,8 +50,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="14dp"
-        android:background="@drawable/button_green"
         android:text="Work"
+
         app:layout_constraintEnd_toStartOf="@+id/btnSchool"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -62,11 +59,11 @@
 
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="229dp"
-        android:layout_height="33dp"
+        android:layout_width="117dp"
+        android:layout_height="34dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="30dp"
-        android:text="Choose a category:"
+        android:layout_marginTop="32dp"
+        android:text="Category"
         android:textSize="24dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
@@ -76,13 +73,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
+        android:layout_marginRight="25dp"
         android:layout_marginBottom="25dp"
         android:clickable="true"
-        android:src="@drawable/add_cross"
-        app:backgroundTint="#2196F3"
+        android:src="@drawable/ic_mtrl_chip_checked_circle"
+        app:backgroundTint="#9942FF00"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:rippleColor="#00FFFFFF" />
+        tools:src="@drawable/ic_mtrl_chip_checked_black" />
 
     <TextView
         android:id="@+id/textView3"
@@ -91,7 +89,6 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="224dp"
         android:text="Title"
-        android:textColor="#1c4966"
         android:textSize="24dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -101,10 +98,8 @@
         android:layout_width="352dp"
         android:layout_height="52dp"
         android:layout_marginStart="24dp"
-        android:background="@drawable/rounded_border"
         android:ems="10"
         android:inputType="textPersonName"
-        android:paddingStart="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -113,15 +108,12 @@
     <EditText
         android:id="@+id/txtDescription"
         android:layout_width="352dp"
-        android:layout_height="82dp"
+        android:layout_height="97dp"
         android:layout_marginStart="50dp"
         android:layout_marginEnd="50dp"
-        android:background="@drawable/rounded_border"
         android:ems="10"
         android:gravity="start|top"
         android:inputType="textMultiLine"
-        android:paddingStart="20dp"
-        android:paddingTop="7dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.634"
         app:layout_constraintStart_toStartOf="parent"
@@ -134,7 +126,6 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
         android:text="Description"
-        android:textColor="#1c4966"
         android:textSize="24dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtTitle" />
@@ -143,11 +134,8 @@
         android:id="@+id/datepicker"
         android:layout_width="351dp"
         android:layout_height="44dp"
-        android:background="@drawable/rounded_border"
         android:ems="10"
-        android:focusable="false"
         android:inputType="date"
-        android:paddingStart="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.387"
         app:layout_constraintStart_toStartOf="parent"
@@ -160,7 +148,6 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
         android:text="Enddate"
-        android:textColor="#1c4966"
         android:textSize="24dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtDescription" />
