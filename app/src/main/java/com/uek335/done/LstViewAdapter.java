@@ -45,17 +45,16 @@ public class LstViewAdapter extends ArrayAdapter<String> {
         holder.textView.setText(taskList[position].getTitle());
         holder.textView.setTextColor(Color.BLACK);
         holder.textView.setId(taskList[position].getId());
-        holder.button.setText("_/");
         holder.button.setId(taskList[position].getId());
         switch(taskList[position].getCategory()){
             case 0:
-                holder.textView.setBackgroundColor(Color.parseColor("#77dd77"));
+                rowView.setBackgroundColor(Color.parseColor("#77dd77"));
                 break;
             case 1:
-                holder.textView.setBackgroundColor(Color.parseColor("#ff8b3d"));
+                rowView.setBackgroundColor(Color.parseColor("#ff8b3d"));
                 break;
             case 2:
-                holder.textView.setBackgroundColor(Color.parseColor("#59bfff"));
+                rowView.setBackgroundColor(Color.parseColor("#59bfff"));
         }
 
         return rowView;
