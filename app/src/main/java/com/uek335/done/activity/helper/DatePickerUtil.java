@@ -4,8 +4,8 @@ import android.icu.text.SimpleDateFormat;
 
 public abstract class DatePickerUtil {
     /* dateformat */
-    private static String dateFormat = "dd/MM/yy";
-    private static SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
+    private final static String dateFormat = "dd/MM/yy";
+    private final static SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
 
     public static SimpleDateFormat getSdf() {
         return sdf;

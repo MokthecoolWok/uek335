@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.room.Room;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.uek335.done.MainActivity;
@@ -16,8 +15,6 @@ import com.uek335.done.activity.helper.DatePickerUtil;
 import com.uek335.done.model.AppDatabase;
 import com.uek335.done.model.Task;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class TaskDetailView extends AppCompatActivity {
@@ -31,7 +28,7 @@ public class TaskDetailView extends AppCompatActivity {
         setContentView(R.layout.activity_detail_view_task);
 
         /* Get Task ID */
-         currentTaskId = getIntent().getIntExtra("TaskId", 1);
+        currentTaskId = getIntent().getIntExtra("TaskId", 1);
 
         /* Populate view with Data */
         populateView(currentTaskId);
@@ -60,18 +57,22 @@ public class TaskDetailView extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        TextView txtCategory = (TextView)findViewById(R.id.txtCategory);
-        TextView txtDescription = (TextView)findViewById(R.id.txtDescription);
-        TextView txtTitle = (TextView)findViewById(R.id.txtTitle);
-        TextView datepicker = (TextView)findViewById(R.id.datepicker);
+        TextView txtCategory = (TextView) findViewById(R.id.txtCategory);
+        TextView txtDescription = (TextView) findViewById(R.id.txtDescription);
+        TextView txtTitle = (TextView) findViewById(R.id.txtTitle);
+        TextView datepicker = (TextView) findViewById(R.id.datepicker);
 
         txtCategory.setText(actualTask.getCategoryString());
         txtDescription.setText(actualTask.getContent());
         txtTitle.setText(actualTask.getTitle());
-        datepicker.setText(actualTask.getEndDateString());
+
+        Date endDate = actualTask.getEndDate();
+        if (endDate != null) {
+            datepicker.setText(DatePickerUtil.getSdf().format(endDate));
+        }
     }
 
-    public boolean onOptionsItemSelected(MenuItem item){
+    public boolean onOptionsItemSelected(MenuItem item) {
         Intent returnIntent = new Intent(getApplicationContext(), MainActivity.class);
         startActivityForResult(returnIntent, 0);
         return true;

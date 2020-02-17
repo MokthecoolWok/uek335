@@ -45,8 +45,9 @@ public class MainActivity extends AppCompatActivity {
      * Get and show all tasks from DB
      */
     private void showAllTasks() {
-        ListView listview = (ListView) findViewById(R.id.listv);
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        ListView listView = (ListView) findViewById(R.id.listv);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 LinearLayout tV = (LinearLayout) view;
                 int taskId = tV.getId();
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         Task[] tasks = AppDatabase.getAppDatabase(getApplicationContext()).taskDao().getAllTasks();
         String[] titel = AppDatabase.getAppDatabase(getApplicationContext()).taskDao().getTitelFromTasks();
         LstViewAdapter adapter = new LstViewAdapter(this, R.layout.list_item, R.id.txt, tasks, titel);
-        listview.setAdapter(adapter);
+        listView.setAdapter(adapter);
     }
 
     @Override
@@ -91,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Function to delete Task
+     *
      * @param view which Task-View to delete
      */
     public void deleteTask(View view) {

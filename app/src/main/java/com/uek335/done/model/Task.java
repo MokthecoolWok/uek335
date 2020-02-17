@@ -60,7 +60,8 @@ public class Task {
     public void setCategory(int categoryId) {
         this.category = categoryId;
     }
-    public String toString(){
+
+    public String toString() {
         return this.title + this.category;
     }
 
@@ -72,17 +73,17 @@ public class Task {
         this.endDate = endDate;
     }
 
-    public String getEndDateString(){
-        if(this.endDate == null){
+    public String getEndDateString() {
+        if (this.endDate == null) {
             return "No Date";
-        }else {
+        } else {
             return "" + this.endDate;
         }
     }
 
-    public String getCategoryString(){
+    public String getCategoryString() {
         String val = "none";
-        switch(this.category){
+        switch (this.category) {
             case 0:
                 val = "Work";
                 break;

@@ -4,8 +4,6 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -25,6 +23,7 @@ import com.uek335.done.model.Task;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static com.uek335.done.R.drawable.button_blue;
@@ -91,15 +90,19 @@ public class EditTaskView extends AppCompatActivity {
         TextView datepicker = (TextView) findViewById(R.id.datepicker);
 
         /* Colour active category */
-        if (taskData.getCategory() != -1){
-            categoryButtons.forEach( button -> button.setBackgroundResource(button_disabled));
+        if (taskData.getCategory() != -1) {
+            categoryButtons.forEach(button -> button.setBackgroundResource(button_disabled));
             categoryButtons.get(taskData.getCategory()).setBackgroundResource(colors[taskData.getCategory()]);
             buttonToUnfocus = categoryButtons.get(taskData.getCategory());
         }
 
         txtDescription.setText(taskData.getContent());
         txtTitle.setText(taskData.getTitle());
-        datepicker.setText(taskData.getEndDateString());
+
+        Date endDate = taskData.getEndDate();
+        if (endDate != null) {
+            datepicker.setText(DatePickerUtil.getSdf().format(endDate));
+        }
     }
 
     /**
