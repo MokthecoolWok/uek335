@@ -31,6 +31,8 @@ import static com.uek335.done.R.drawable.button_green;
 import static com.uek335.done.R.drawable.button_orange;
 
 public class EditTaskView extends AppCompatActivity {
+    /* ID of task */
+    int taskId;
 
     FloatingActionButton updateTaskInDb;
     /* Buttons for category */
@@ -47,12 +49,18 @@ public class EditTaskView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_task_view);
 
+        /* Get ID of editing Task */
+        taskId = getIntent().getIntExtra("TaskId", 1);
+
         /* Initialize Back button in Actionbar */
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         /* Initialize category buttons */
         initializeCategories();
+
+        /* Initialize DatePicker */
+        initializeDatePicker();
 
         /* Add action to Fab */
         updateTaskInDb = findViewById(R.id.createNewTask);
@@ -64,7 +72,7 @@ public class EditTaskView extends AppCompatActivity {
         });
 
         /* Populate View with Data from DB */
-        populateView(getIntent().getIntExtra("TaskId", 1));
+        populateView(taskId);
     }
 
     /**
@@ -122,6 +130,33 @@ public class EditTaskView extends AppCompatActivity {
     }
 
     /**
+     * Initialize DatePicker Dialog
+     */
+    private void initializeDatePicker() {
+        endDate = findViewById(R.id.datepicker);
+        date = (view, year, month, day) -> {
+            calendar.set(Calendar.YEAR, year);
+            calendar.set(Calendar.MONTH, month);
+            calendar.set(Calendar.DAY_OF_MONTH, day);
+            updateLabel();
+        };
+
+        /* add datepicker to onclick on endDate textField */
+        endDate.setOnClickListener(v -> new DatePickerDialog(EditTaskView.this, date,
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH))
+                .show());
+    }
+
+    /**
+     * @Section Datepicker functionality
+     */
+    private void updateLabel() {
+        endDate.setText(DatePickerUtil.getSdf().format(calendar.getTime()));
+    }
+
+    /**
      * Send updated task to DB
      */
     public void editTask() {
@@ -133,6 +168,7 @@ public class EditTaskView extends AppCompatActivity {
             EditText datePickerView = findViewById(R.id.datepicker);
             AppDatabase.getAppDatabase(getApplicationContext()).taskDao().updateTask(new Task() {
                 {
+                    setId(taskId);
                     setTitle(titleView.getText().toString().trim());
                     setContent(contentView.getText().toString().trim());
                     setCategory(categoryButtons.indexOf(buttonToUnfocus));

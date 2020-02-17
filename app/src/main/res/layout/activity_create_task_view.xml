@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
 
 
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -29,8 +28,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="14dp"
-        android:text="School"
         android:background="@drawable/button_orange"
+        android:text="School"
         app:layout_constraintEnd_toStartOf="@+id/btnPrivate"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/btnWork"
@@ -41,8 +40,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="14dp"
-        android:text="Private"
         android:background="@drawable/button_blue"
+        android:text="Private"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/btnSchool"

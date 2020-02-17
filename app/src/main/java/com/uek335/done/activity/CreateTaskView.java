@@ -4,13 +4,11 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.icu.text.SimpleDateFormat;
 import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,17 +30,17 @@ import static com.uek335.done.R.drawable.button_green;
 import static com.uek335.done.R.drawable.button_orange;
 
 public class CreateTaskView extends AppCompatActivity {
-    /* buttons for category */
+    /* Buttons for category */
     private List<Button> categoryButtons = new ArrayList<>();
     private Button buttonToUnfocus;
     private int[] buttonIds = {R.id.btnWork, R.id.btnSchool, R.id.btnPrivate};
 
-    /* datepicker */
+    /* Datepicker */
     final Calendar calendar = Calendar.getInstance();
     EditText endDate;
     DatePickerDialog.OnDateSetListener date;
 
-    /* fab button */
+    /* fabButton */
     FloatingActionButton createTaskInDb;
 
     @Override
@@ -85,20 +83,20 @@ public class CreateTaskView extends AppCompatActivity {
 
                     // check if button is selected a second time
                     if (buttonToUnfocus != null && v.getId() == buttonToUnfocus.getId()) {
-                        unsetButtonFocus((Button) v);
+                        unsetButtonFocus();
                     } else {
                         // switch focus
                         switch (v.getId()) {
                             case R.id.btnWork:
-                                setButtonFocus(buttonToUnfocus, categoryButtons.get(0));
+                                setButtonFocus(categoryButtons.get(0));
                                 break;
 
                             case R.id.btnSchool:
-                                setButtonFocus(buttonToUnfocus, categoryButtons.get(1));
+                                setButtonFocus(categoryButtons.get(1));
                                 break;
 
                             case R.id.btnPrivate:
-                                setButtonFocus(buttonToUnfocus, categoryButtons.get(2));
+                                setButtonFocus(categoryButtons.get(2));
                                 break;
                         }
                     }
@@ -193,10 +191,9 @@ public class CreateTaskView extends AppCompatActivity {
     /**
      * Set focus for category button
      *
-     * @param unfocusedButton Button to unfocus
-     * @param focusedButton   Newly focused button
+     * @param focusedButton Newly focused button
      */
-    private void setButtonFocus(Button unfocusedButton, final Button focusedButton) {
+    private void setButtonFocus(final Button focusedButton) {
         categoryButtons.forEach(button -> {
             if (!focusedButton.equals(button)) {
                 button.setBackgroundResource(button_disabled);
@@ -208,10 +205,8 @@ public class CreateTaskView extends AppCompatActivity {
 
     /**
      * Unfocus already focused button
-     *
-     * @param focusedButton Newly focused button
      */
-    private void unsetButtonFocus(Button focusedButton) {
+    private void unsetButtonFocus() {
         this.buttonToUnfocus = null;
     }
 }

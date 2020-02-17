@@ -40,8 +40,8 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.this.startActivity(showCreateTaskView);
             }
         });
-        ListView lstview = (ListView) findViewById(R.id.listv);
-        lstview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        ListView listview = (ListView) findViewById(R.id.listv);
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 LinearLayout tV = (LinearLayout) view;
                 int taskId = tV.getId();
@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         Task[] tasks = AppDatabase.getAppDatabase(getApplicationContext()).taskDao().getAllTasks();
         String[] titel = AppDatabase.getAppDatabase(getApplicationContext()).taskDao().getTitelFromTasks();
         LstViewAdapter adapter = new LstViewAdapter(this, R.layout.list_item, R.id.txt, tasks, titel);
-        lstview.setAdapter(adapter);
+        listview.setAdapter(adapter);
     }
 
     @Override
