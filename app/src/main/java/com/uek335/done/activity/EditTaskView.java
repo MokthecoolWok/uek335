@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -39,6 +41,7 @@ public class EditTaskView extends AppCompatActivity {
     private List<Button> categoryButtons = new ArrayList<>();
     private Button buttonToUnfocus;
     private int[] buttonIds = {R.id.btnWork, R.id.btnSchool, R.id.btnPrivate};
+    private int[] colors = {button_green, button_orange, button_blue};
     /* Datepicker */
     final Calendar calendar = Calendar.getInstance();
     EditText endDate;
@@ -80,12 +83,18 @@ public class EditTaskView extends AppCompatActivity {
      *
      * @param taskId int value which provides ID of task
      */
-    public void populateView(int taskId) {
+    private void populateView(int taskId) {
         Task taskData = AppDatabase.getAppDatabase(getApplicationContext()).taskDao().getTask(taskId);
 
         TextView txtDescription = (TextView) findViewById(R.id.txtDescription);
         TextView txtTitle = (TextView) findViewById(R.id.txtTitle);
         TextView datepicker = (TextView) findViewById(R.id.datepicker);
+
+        /* Colour active category */
+        if (taskData.getCategory() != -1){
+            categoryButtons.get(taskData.getCategory()).setBackgroundResource(colors[taskData.getCategory()]);
+            buttonToUnfocus = categoryButtons.get(taskData.getCategory());
+        }
 
         txtDescription.setText(taskData.getContent());
         txtTitle.setText(taskData.getTitle());
@@ -95,7 +104,7 @@ public class EditTaskView extends AppCompatActivity {
     /**
      * Initialize Category buttons
      */
-    public void initializeCategories() {
+    private void initializeCategories() {
         for (int i = 0; i < buttonIds.length; i++) {
             categoryButtons.add((Button) findViewById(buttonIds[i]));
             categoryButtons.get(i).setOnClickListener(new View.OnClickListener() {
@@ -127,6 +136,8 @@ public class EditTaskView extends AppCompatActivity {
                 }
             });
         }
+
+        categoryButtons.forEach( button -> button.setBackgroundResource(button_disabled));
     }
 
     /**
@@ -159,7 +170,7 @@ public class EditTaskView extends AppCompatActivity {
     /**
      * Send updated task to DB
      */
-    public void editTask() {
+    private void editTask() {
         final EditText titleView = findViewById(R.id.txtTitle);
 
         /* Check if title is set */
