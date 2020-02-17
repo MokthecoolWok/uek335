@@ -2,8 +2,6 @@ package com.uek335.done;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -16,6 +14,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.uek335.done.activity.CreateTaskView;
 import com.uek335.done.activity.TaskDetailView;
+import com.uek335.done.activity.adapter.LstViewAdapter;
 import com.uek335.done.model.AppDatabase;
 import com.uek335.done.model.Task;
 

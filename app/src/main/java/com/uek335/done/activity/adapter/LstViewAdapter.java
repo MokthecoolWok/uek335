@@ -1,4 +1,4 @@
-package com.uek335.done;
+package com.uek335.done.activity.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.uek335.done.R;
 import com.uek335.done.model.Task;
 
 import java.util.ArrayList;
