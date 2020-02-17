@@ -1,6 +1,5 @@
 package com.uek335.done;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -21,14 +20,12 @@ import com.uek335.done.model.AppDatabase;
 import com.uek335.done.model.Task;
 
 public class MainActivity extends AppCompatActivity {
-    Context context;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        context = this;
-        //Toolbar and Floatingbar to add Task
+
+        /* Toolbar and Fab to add Task */
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         FloatingActionButton addTaskButton = findViewById(R.id.addTask);
@@ -36,10 +33,18 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent showCreateTaskView = new Intent(MainActivity.this, CreateTaskView.class);
-                // parameters ==> showCreateTaskView.putExtra("key", param);
                 MainActivity.this.startActivity(showCreateTaskView);
             }
         });
+
+        /* Populate Start Screen with data */
+        showAllTasks();
+    }
+
+    /**
+     * Get and show all tasks from DB
+     */
+    private void showAllTasks() {
         ListView listview = (ListView) findViewById(R.id.listv);
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -84,6 +89,10 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+    /**
+     * Function to delete Task
+     * @param view which Task-View to delete
+     */
     public void deleteTask(View view) {
         Button bt = (Button) view;
         int taskId = bt.getId();

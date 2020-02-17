@@ -92,6 +92,7 @@ public class EditTaskView extends AppCompatActivity {
 
         /* Colour active category */
         if (taskData.getCategory() != -1){
+            categoryButtons.forEach( button -> button.setBackgroundResource(button_disabled));
             categoryButtons.get(taskData.getCategory()).setBackgroundResource(colors[taskData.getCategory()]);
             buttonToUnfocus = categoryButtons.get(taskData.getCategory());
         }
@@ -137,7 +138,10 @@ public class EditTaskView extends AppCompatActivity {
             });
         }
 
-        categoryButtons.forEach( button -> button.setBackgroundResource(button_disabled));
+        /* Initialize Colours */
+        categoryButtons.get(0).setBackgroundResource(button_green);
+        categoryButtons.get(1).setBackgroundResource(button_orange);
+        categoryButtons.get(2).setBackgroundResource(button_blue);
     }
 
     /**
