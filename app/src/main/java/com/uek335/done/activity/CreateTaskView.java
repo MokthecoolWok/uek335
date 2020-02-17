@@ -14,11 +14,11 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.room.Room;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.uek335.done.MainActivity;
 import com.uek335.done.R;
+import com.uek335.done.activity.helper.DatePickerUtil;
 import com.uek335.done.model.AppDatabase;
 import com.uek335.done.model.Task;
 
@@ -32,10 +32,6 @@ import static com.uek335.done.R.drawable.button_green;
 import static com.uek335.done.R.drawable.button_orange;
 
 public class CreateTaskView extends AppCompatActivity {
-    /* dateformat */
-    String dateFormat = "dd/MM/yy";
-    SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
-
     /* buttons for category */
     private List<Button> categoryButtons = new ArrayList<>();
     private Button buttonToUnfocus;
@@ -54,11 +50,30 @@ public class CreateTaskView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_task_view);
 
-        // get Back button
+        /* Add Back button to ActionBar */
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        // initialize category buttons
+        /* Initialize CategoryButtons */
+        initializeCategories();
+
+        /* Initialize datepicker */
+        initializeDatePicker();
+
+        /* Add action to Fab */
+        createTaskInDb = findViewById(R.id.createNewTask);
+        createTaskInDb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                createTask();
+            }
+        });
+    }
+
+    /**
+     * Initialize Category Buttons
+     */
+    private void initializeCategories() {
         for (int i = 0; i < buttonIds.length; i++) {
             categoryButtons.add((Button) findViewById(buttonIds[i]));
             categoryButtons.get(i).setOnClickListener(new View.OnClickListener() {
@@ -90,44 +105,42 @@ public class CreateTaskView extends AppCompatActivity {
                 }
             });
         }
-
-        endDate = findViewById(R.id.datepicker);
-        // initialize datepicker
-        date = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int day) {
-                calendar.set(Calendar.YEAR, year);
-                calendar.set(Calendar.MONTH, month);
-                calendar.set(Calendar.DAY_OF_MONTH, day);
-                updateLabel();
-            }
-        };
-        // add datepicker to onclick on endDate textfield
-        endDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new DatePickerDialog(CreateTaskView.this, date,
-                        calendar.get(Calendar.YEAR),
-                        calendar.get(Calendar.MONTH),
-                        calendar.get(Calendar.DAY_OF_MONTH))
-                        .show();
-            }
-        });
-
-        // add action to Fab
-        createTaskInDb = findViewById(R.id.createNewTask);
-        createTaskInDb.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                createTask();
-            }
-        });
     }
 
+    /**
+     * Initialize DatePicker Dialog
+     */
+    private void initializeDatePicker() {
+        endDate = findViewById(R.id.datepicker);
+        date = (view, year, month, day) -> {
+            calendar.set(Calendar.YEAR, year);
+            calendar.set(Calendar.MONTH, month);
+            calendar.set(Calendar.DAY_OF_MONTH, day);
+            updateLabel();
+        };
+
+        /* add datepicker to onclick on endDate textfield */
+        endDate.setOnClickListener(v -> new DatePickerDialog(CreateTaskView.this, date,
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH))
+                .show());
+    }
+
+    /**
+     * @Section Datepicker functionality
+     */
+    private void updateLabel() {
+        endDate.setText(DatePickerUtil.getSdf().format(calendar.getTime()));
+    }
+
+    /**
+     * Create task in DB
+     */
     private void createTask() {
         final EditText titleView = findViewById(R.id.txtTitle);
 
-        // check if title is set
+        /* Check if title is set */
         if (!titleView.getText().toString().trim().isEmpty()) {
             // post new entry to db
             AppDatabase.getAppDatabase(getApplicationContext()).taskDao().insertTask(new Task() {
@@ -142,14 +155,14 @@ public class CreateTaskView extends AppCompatActivity {
                     // set end date
                     EditText endDate = findViewById(R.id.datepicker);
                     try {
-                        setEndDate(sdf.parse(endDate.getText().toString()));
+                        setEndDate(DatePickerUtil.getSdf().parse(endDate.getText().toString()));
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
                 }
             });
 
-            // return to main page
+            /* Return to main page */
             Intent returnToStart = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(returnToStart);
         } else {
@@ -200,12 +213,5 @@ public class CreateTaskView extends AppCompatActivity {
      */
     private void unsetButtonFocus(Button focusedButton) {
         this.buttonToUnfocus = null;
-    }
-
-    /**
-     * @Section Datepicker functionality
-     */
-    private void updateLabel() {
-        endDate.setText(sdf.format(calendar.getTime()));
     }
 }

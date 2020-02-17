@@ -6,33 +6,23 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.uek335.done.activity.CreateTaskView;
-import com.uek335.done.activity.EditTaskView;
 import com.uek335.done.activity.TaskDetailView;
 import com.uek335.done.model.AppDatabase;
 import com.uek335.done.model.Task;
-import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,10 +40,10 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.this.startActivity(showCreateTaskView);
             }
         });
-        ListView lstview=(ListView)findViewById(R.id.listv);
-        lstview.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id){
-                LinearLayout tV =(LinearLayout)view;
+        ListView lstview = (ListView) findViewById(R.id.listv);
+        lstview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                LinearLayout tV = (LinearLayout) view;
                 int taskId = tV.getId();
                 Intent showEditTaskView = new Intent(MainActivity.this, TaskDetailView.class);
                 showEditTaskView.putExtra("TaskId", taskId);
@@ -62,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         });
         Task[] tasks = AppDatabase.getAppDatabase(getApplicationContext()).taskDao().getAllTasks();
         String[] titel = AppDatabase.getAppDatabase(getApplicationContext()).taskDao().getTitelFromTasks();
-        LstViewAdapter adapter = new LstViewAdapter(this,R.layout.list_item, R.id.txt, tasks, titel);
+        LstViewAdapter adapter = new LstViewAdapter(this, R.layout.list_item, R.id.txt, tasks, titel);
         lstview.setAdapter(adapter);
     }
 
@@ -94,28 +84,16 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    public void deleteTask(View view){
-        Button bt=(Button)view;
+    public void deleteTask(View view) {
+        Button bt = (Button) view;
         int taskId = bt.getId();
         Task[] tasks = AppDatabase.getAppDatabase(getApplicationContext()).taskDao().getAllTasks();
-        for (int x = 0; x < tasks.length; x++){
-            if (tasks[x].getId() == taskId){
+        for (int x = 0; x < tasks.length; x++) {
+            if (tasks[x].getId() == taskId) {
                 AppDatabase.getAppDatabase(getApplicationContext()).taskDao().deleteTask(tasks[x]);
             }
         }
         finish();
         startActivity(getIntent());
     }
-    /*public void goToDetail(View view){
-        TextView tV =(TextView)view;
-        int taskId = tV.getId();
-        Task[] tasks = AppDatabase.getAppDatabase(getApplicationContext()).taskDao().getAllTasks();
-        for (int x = 0; x < tasks.length; x++){
-            if (tasks[x].getId() == taskId){
-                Intent showEditTaskView = new Intent(MainActivity.this, EditTaskView.class);
-                showEditTaskView.putExtra("key", tasks[x].getId());
-                MainActivity.this.startActivity(showEditTaskView);
-            }
-        }
-    }*/
 }

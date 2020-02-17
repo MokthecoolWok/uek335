@@ -12,19 +12,25 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public abstract TaskDao taskDao();
 
-    public static AppDatabase getAppDatabase(Context context){
-        if (INSTANCE == null){
+    /**
+     * Check status of AppDatabase
+     *
+     * @param context Context of action
+     * @return Instance of AppDatabase
+     */
+    public static AppDatabase getAppDatabase(Context context) {
+        if (INSTANCE == null) {
             INSTANCE =
                     Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, "task_database")
-                    // allow queries on the main thread.
-                    // Don't do this on a real app! See PersistenceBasicSample for an example.
-                    .allowMainThreadQueries()
-                    .build();
+                            // allow queries on the main thread.
+                            // Don't do this on a real app! See PersistenceBasicSample for an example.
+                            .allowMainThreadQueries()
+                            .build();
         }
         return INSTANCE;
     }
 
-    public static void destroyInstance(){
+    public static void destroyInstance() {
         INSTANCE = null;
     }
 }

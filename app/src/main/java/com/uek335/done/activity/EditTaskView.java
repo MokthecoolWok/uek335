@@ -1,7 +1,10 @@
 package com.uek335.done.activity;
 
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.icu.text.SimpleDateFormat;
+import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.uek335.done.MainActivity;
 import com.uek335.done.R;
+import com.uek335.done.activity.helper.DatePickerUtil;
 import com.uek335.done.model.AppDatabase;
 import com.uek335.done.model.Task;
 
@@ -29,36 +33,61 @@ import static com.uek335.done.R.drawable.button_orange;
 public class EditTaskView extends AppCompatActivity {
 
     FloatingActionButton updateTaskInDb;
-    /* buttons for category */
+    /* Buttons for category */
     private List<Button> categoryButtons = new ArrayList<>();
     private Button buttonToUnfocus;
     private int[] buttonIds = {R.id.btnWork, R.id.btnSchool, R.id.btnPrivate};
+    /* Datepicker */
+    final Calendar calendar = Calendar.getInstance();
+    EditText endDate;
+    DatePickerDialog.OnDateSetListener date;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_task_view);
-        Intent intent = getIntent();
-        int taskId = intent.getIntExtra("TaskId", 1);
 
-        String dateFormat = "dd/MM/yy";
-        android.icu.text.SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
-
-        Task actualTask = AppDatabase.getAppDatabase(getApplicationContext()).taskDao().getTask(taskId);
-
-        // get Back button
+        /* Initialize Back button in Actionbar */
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        TextView txtDescription = (TextView)findViewById(R.id.txtDescription);
-        TextView txtTitle = (TextView)findViewById(R.id.txtTitle);
-        TextView datepicker = (TextView)findViewById(R.id.datepicker);
+        /* Initialize category buttons */
+        initializeCategories();
 
-        txtDescription.setText(actualTask.getContent());
-        txtTitle.setText(actualTask.getTitle());
-        datepicker.setText(actualTask.getEndDateString());
+        /* Add action to Fab */
+        updateTaskInDb = findViewById(R.id.createNewTask);
+        updateTaskInDb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                editTask();
+            }
+        });
 
-        // initialize category buttons
+        /* Populate View with Data from DB */
+        populateView(getIntent().getIntExtra("TaskId", 1));
+    }
+
+    /**
+     * Get Data from DB according to provided taskId
+     *
+     * @param taskId int value which provides ID of task
+     */
+    public void populateView(int taskId) {
+        Task taskData = AppDatabase.getAppDatabase(getApplicationContext()).taskDao().getTask(taskId);
+
+        TextView txtDescription = (TextView) findViewById(R.id.txtDescription);
+        TextView txtTitle = (TextView) findViewById(R.id.txtTitle);
+        TextView datepicker = (TextView) findViewById(R.id.datepicker);
+
+        txtDescription.setText(taskData.getContent());
+        txtTitle.setText(taskData.getTitle());
+        datepicker.setText(taskData.getEndDateString());
+    }
+
+    /**
+     * Initialize Category buttons
+     */
+    public void initializeCategories() {
         for (int i = 0; i < buttonIds.length; i++) {
             categoryButtons.add((Button) findViewById(buttonIds[i]));
             categoryButtons.get(i).setOnClickListener(new View.OnClickListener() {
@@ -90,37 +119,50 @@ public class EditTaskView extends AppCompatActivity {
                 }
             });
         }
-
-
-        // add action to Fab
-        updateTaskInDb = findViewById(R.id.createNewTask);
-        updateTaskInDb.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                EditText titleView = findViewById(R.id.txtTitle);
-                EditText contentView = findViewById(R.id.txtDescription);
-                EditText datePickerView = findViewById(R.id.datepicker);
-                AppDatabase.getAppDatabase(getApplicationContext()).taskDao().updateTask(new Task() {
-                    {
-                        setTitle(titleView.getText().toString().trim());
-                        setContent(contentView.getText().toString().trim());
-                        setCategory(categoryButtons.indexOf(buttonToUnfocus));
-                        setId(taskId);
-                        try {
-                            setEndDate(sdf.parse(datePickerView.getText().toString()));
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-                // return to main page
-                Intent returnToStart = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(returnToStart);
-            }
-        });
     }
 
-    public boolean onOptionsItemSelected(MenuItem item){
+    /**
+     * Send updated task to DB
+     */
+    public void editTask() {
+        final EditText titleView = findViewById(R.id.txtTitle);
+
+        /* Check if title is set */
+        if (!titleView.getText().toString().trim().isEmpty()) {
+            EditText contentView = findViewById(R.id.txtDescription);
+            EditText datePickerView = findViewById(R.id.datepicker);
+            AppDatabase.getAppDatabase(getApplicationContext()).taskDao().updateTask(new Task() {
+                {
+                    setTitle(titleView.getText().toString().trim());
+                    setContent(contentView.getText().toString().trim());
+                    setCategory(categoryButtons.indexOf(buttonToUnfocus));
+                    try {
+                        setEndDate(DatePickerUtil.getSdf().parse(datePickerView.getText().toString()));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+            /* Return to main page */
+            Intent returnToStart = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(returnToStart);
+        } else {
+            /* throw alert dialog here */
+            new AlertDialog.Builder(this)
+                    .setTitle("Error")
+                    .setMessage("Please add a title to your task!")
+                    .setNeutralButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .show();
+        }
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
         Intent returnIntent = new Intent(getApplicationContext(), TaskDetailView.class);
         startActivityForResult(returnIntent, 0);
         return true;

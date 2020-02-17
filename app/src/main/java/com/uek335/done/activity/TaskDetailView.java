@@ -22,23 +22,42 @@ import java.util.Date;
 public class TaskDetailView extends AppCompatActivity {
 
     FloatingActionButton btn;
-    AppDatabase database;
-
+    int currentTaskId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        Intent intent = getIntent();
-        int taskId = intent.getIntExtra("TaskId", 1);
-
-        Task actualTask = AppDatabase.getAppDatabase(getApplicationContext()).taskDao().getTask(taskId);
-
-        // get Back button
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_view_task);
+
+        /* Get Task ID */
+         currentTaskId = getIntent().getIntExtra("TaskId", 1);
+
+        /* Populate view with Data */
+        populateView(currentTaskId);
+
+        /* Add action to Fab */
+        btn = findViewById(R.id.btnEditTask);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent showEditTaskView = new Intent(TaskDetailView.this, EditTaskView.class);
+                showEditTaskView.putExtra("TaskId", currentTaskId);
+                TaskDetailView.this.startActivity(showEditTaskView);
+            }
+        });
+    }
+
+    /**
+     * Populate View with Data from DB
+     *
+     * @param taskId Id of task to get from DB
+     */
+    private void populateView(int taskId) {
+        Task actualTask = AppDatabase.getAppDatabase(getApplicationContext()).taskDao().getTask(taskId);
+
+        /* Add Back button to ActionBar */
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         TextView txtCategory = (TextView)findViewById(R.id.txtCategory);
         TextView txtDescription = (TextView)findViewById(R.id.txtDescription);
@@ -49,18 +68,6 @@ public class TaskDetailView extends AppCompatActivity {
         txtDescription.setText(actualTask.getContent());
         txtTitle.setText(actualTask.getTitle());
         datepicker.setText(actualTask.getEndDateString());
-
-
-        btn = findViewById(R.id.btnEditTask);
-
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent showEditTaskView = new Intent(TaskDetailView.this, EditTaskView.class);
-                showEditTaskView.putExtra("TaskId", taskId);
-                TaskDetailView.this.startActivity(showEditTaskView);
-            }
-        });
     }
 
     public boolean onOptionsItemSelected(MenuItem item){

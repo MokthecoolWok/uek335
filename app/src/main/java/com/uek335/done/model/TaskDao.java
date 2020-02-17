@@ -7,9 +7,6 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import java.util.Date;
-import java.util.List;
-
 @Dao
 public interface TaskDao {
     @Query("SELECT * FROM tasks")
@@ -18,7 +15,7 @@ public interface TaskDao {
     @Query("Select title FROM tasks")
     String[] getTitelFromTasks();
 
-    @Query("SELECT * FROM tasks WHERE taskId = :taskId" )
+    @Query("SELECT * FROM tasks WHERE taskId = :taskId")
     Task getTask(int taskId);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
