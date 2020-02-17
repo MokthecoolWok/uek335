@@ -1,55 +1,87 @@
 package com.uek335.done;
 
+import android.content.Intent;
 import android.os.Bundle;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.uek335.done.activity.CreateTaskView;
+import com.uek335.done.activity.TaskDetailView;
+import com.uek335.done.activity.adapter.LstViewAdapter;
+import com.uek335.done.model.AppDatabase;
+import com.uek335.done.model.Task;
 
 public class MainActivity extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        /* Toolbar and Fab to add Task */
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton addTaskButton = findViewById(R.id.addTask);
+        addTaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent showCreateTaskView = new Intent(MainActivity.this, CreateTaskView.class);
+                MainActivity.this.startActivity(showCreateTaskView);
             }
         });
+
+        /* Populate Start Screen with data */
+        showAllTasks();
+    }
+
+    /**
+     * Get and show all tasks from DB
+     */
+    private void showAllTasks() {
+        ListView listView = (ListView) findViewById(R.id.listv);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                LinearLayout tV = (LinearLayout) view;
+                int taskId = tV.getId();
+                Intent showEditTaskView = new Intent(MainActivity.this, TaskDetailView.class);
+                showEditTaskView.putExtra("TaskId", taskId);
+                MainActivity.this.startActivity(showEditTaskView);
+            }
+        });
+        Task[] tasks = AppDatabase.getAppDatabase(getApplicationContext()).taskDao().getAllTasks();
+        String[] titel = AppDatabase.getAppDatabase(getApplicationContext()).taskDao().getTitelFromTasks();
+        LstViewAdapter adapter = new LstViewAdapter(this, R.layout.list_item, R.id.txt, tasks, titel);
+        listView.setAdapter(adapter);
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+    public void onDestroy() {
+        AppDatabase.destroyInstance();
+        super.onDestroy();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+    /**
+     * Function to delete Task
+     *
+     * @param view which Task-View to delete
+     */
+    public void deleteTask(View view) {
+        Button bt = (Button) view;
+        int taskId = bt.getId();
+        Task[] tasks = AppDatabase.getAppDatabase(getApplicationContext()).taskDao().getAllTasks();
+        for (int x = 0; x < tasks.length; x++) {
+            if (tasks[x].getId() == taskId) {
+                AppDatabase.getAppDatabase(getApplicationContext()).taskDao().deleteTask(tasks[x]);
+            }
         }
-
-        return super.onOptionsItemSelected(item);
+        finish();
+        startActivity(getIntent());
     }
 }
