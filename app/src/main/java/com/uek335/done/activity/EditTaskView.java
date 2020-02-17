@@ -19,13 +19,13 @@ public class EditTaskView extends AppCompatActivity {
 
     AppDatabase database;
     FloatingActionButton createTaskInDb;
-
+    int taskId = getTaskId();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_task_view);
 
-        int taskId = getTaskId();
+
 
         // add Database context
         database = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "task_databasa")
@@ -68,6 +68,19 @@ public class EditTaskView extends AppCompatActivity {
             }
         });
     }
+
+    private void updateTask(){
+
+        Task taskToUpdate;
+
+        taskToUpdate = database.taskDao().getTask(taskId);
+
+        taskToUpdate.setContent();
+        taskToUpdate.setCategory();
+        taskToUpdate.setTitle();
+    }
+
+
 
     private void createTask() {
         EditText titleView = findViewById(R.id.txtTitle);
